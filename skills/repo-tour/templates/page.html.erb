@@ -1,0 +1,11 @@
+<section class="page-hero">
+  <p class="eyebrow"><%= h(page_label) %></p>
+  <h1><%= h(page_data["title"] || page_label) %></h1>
+  <% if present?(page_data["lead"]) %>
+  <p class="lead"><%= h(page_data["lead"]) %></p>
+  <% end %>
+</section>
+
+<%= render_page_sections(page_key, page_data) %>
+
+<%= render_unknowns(page_data["uncertain_points"]) %>

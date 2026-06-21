@@ -1,0 +1,37 @@
+<section class="page-hero">
+  <p class="eyebrow">Repo Tour</p>
+  <h1><%= h(site_title) %></h1>
+  <p class="lead"><%= h(lead_for(product_overview)) %></p>
+</section>
+
+<section class="grid">
+  <article class="card">
+    <p class="eyebrow">概要</p>
+    <h2><a href="product-overview.html">プロダクト概要</a></h2>
+    <p>利用者、主要概念、最初に読むべきファイルを整理しています。</p>
+  </article>
+  <article class="card">
+    <p class="eyebrow">スタック</p>
+    <h2><a href="tech-stack.html">技術スタック</a></h2>
+    <p>言語、フレームワーク、データストア、非同期処理、外部連携、テストの用途をまとめています。</p>
+  </article>
+  <article class="card">
+    <p class="eyebrow">設計</p>
+    <h2><a href="architecture.html">設計</a></h2>
+    <p>明示された方針とコードから観察できる責務分担を確認できます。</p>
+  </article>
+</section>
+
+<% if product_overview["summary"].is_a?(Array) && product_overview["summary"].any? %>
+<section class="panel">
+  <h2>レポート概要</h2>
+  <%= paragraphs(product_overview["summary"]) %>
+</section>
+<% end %>
+
+<% if product_overview["major_concepts"].is_a?(Array) && product_overview["major_concepts"].any? %>
+<section class="panel">
+  <h2>主要な概念</h2>
+  <%= concept_list(product_overview["major_concepts"]) %>
+</section>
+<% end %>

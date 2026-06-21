@@ -1,0 +1,62 @@
+<div class="breadcrumb"><a href="../index.html">Repo Tour</a> &gt; <span><%= h(feature["category"] || feature["product_area"] || "その他") %></span> &gt; <%= h(feature["name"]) %></div>
+
+<section class="page-hero">
+  <p class="eyebrow"><%= h(feature["category"] || feature["product_area"] || "その他") %></p>
+  <h1><%= h(feature["name"]) %></h1>
+  <% if present?(feature["summary"]) %>
+  <p class="lead"><%= h(feature["summary"]) %></p>
+  <% end %>
+</section>
+
+<section class="detail-grid">
+  <article class="panel">
+    <h2>この機能でできること</h2>
+    <%= capability_content(feature) %>
+  </article>
+  <article class="panel">
+    <h2>主な利用シーン</h2>
+    <%= list(feature["scenarios"]) %>
+  </article>
+  <article class="panel">
+    <h2>おおまかな処理の流れ</h2>
+    <%= ordered_list(feature["flow"]) %>
+  </article>
+  <article class="panel">
+    <h2>主な概念</h2>
+    <%= list(feature["concepts"]) %>
+    <h2>入口</h2>
+    <%= list(feature["entry_points"]) %>
+  </article>
+  <article class="panel">
+    <h2>権限・制約・注意点</h2>
+    <%= list(feature["constraints"]) %>
+  </article>
+</section>
+
+<% if related_features(feature).any? %>
+<section class="panel">
+  <h2>関連機能</h2>
+  <ul class="feature-links">
+    <% related_features(feature).each do |related| %>
+    <li><a href="<%= h(feature_file_name(related)) %>"><%= h(related["name"]) %></a><% if present?(related["summary"]) %><span class="muted"> <%= h(related["summary"]) %></span><% end %></li>
+    <% end %>
+  </ul>
+</section>
+<% end %>
+
+<section class="panel">
+  <h2>実装を確認するときの入口ファイル</h2>
+  <%= file_list(feature["implementation_entry_files"] || feature["important_files"], prefix: "../") %>
+</section>
+
+<section class="panel">
+  <h2>変更時の注意</h2>
+  <%= list(feature["change_notes"]) %>
+</section>
+
+<details class="evidence">
+  <summary>根拠ファイル</summary>
+  <%= file_list(feature["evidence_files"], prefix: "../") %>
+</details>
+
+<%= render_unknowns(feature["uncertain_points"]) %>

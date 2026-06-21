@@ -1,0 +1,4 @@
+.envrc
+docs/repo-tour/
+*.tmp
+tmp/

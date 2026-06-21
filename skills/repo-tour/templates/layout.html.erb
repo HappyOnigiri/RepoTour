@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= h(@page_title || page_title) %></title>
+  <link rel="stylesheet" href="<%= h(prefix) %>assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="<%= h(prefix) %>index.html"><%= h(site_title) %></a>
+  </header>
+  <div class="repo-shell">
+<%= side_menu(prefix: prefix, current: current) %>
+    <main class="page">
+<%= content %>
+    </main>
+  </div>
+  <script>
+    (function () {
+      var key = 'repoTour.sideMenuScrollTop';
+      var menu = document.querySelector('.side-menu');
+      var storage;
+      if (!menu) return;
+      try {
+        storage = window.sessionStorage;
+      } catch (_error) {
+        return;
+      }
+      if (!storage) return;
+
+      var read = function () {
+        try {
+          return Number(storage.getItem(key) || 0);
+        } catch (_error) {
+          return 0;
+        }
+      };
+
+      var write = function () {
+        try {
+          storage.setItem(key, String(menu.scrollTop));
+        } catch (_error) {
+          // Ignore storage failures so the static report remains usable.
+        }
+      };
+
+      var restore = function () {
+        var top = read();
+        if (top > 0) menu.scrollTop = top;
+      };
+
+      window.requestAnimationFrame(restore);
+      menu.addEventListener('scroll', write, { passive: true });
+      window.addEventListener('pagehide', write);
+      document.addEventListener('click', function (event) {
+        if (event.target.closest && event.target.closest('.side-menu a[href]')) write();
+      });
+    }());
+    (function () {
+      var resetLabel = function (button) {
+        window.setTimeout(function () {
+          button.setAttribute('title', '相対パスをコピー');
+          button.setAttribute('aria-label', '相対パスをコピー');
+          button.removeAttribute('data-copied');
+        }, 1400);
+      };
+
+      var markCopied = function (button) {
+        button.setAttribute('title', 'コピーしました');
+        button.setAttribute('aria-label', 'コピーしました');
+        button.setAttribute('data-copied', 'true');
+        resetLabel(button);
+      };
+
+      var fallbackCopy = function (text) {
+        var textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.top = '-1000px';
+        textarea.style.left = '-1000px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+        } finally {
+          document.body.removeChild(textarea);
+        }
+      };
+
+      window.repoTour = window.repoTour || {};
+      window.repoTour.copyFilePath = function (button, path) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(path).then(function () {
+            markCopied(button);
+          }).catch(function () {
+            fallbackCopy(path);
+            markCopied(button);
+          });
+          return;
+        }
+
+        fallbackCopy(path);
+        markCopied(button);
+      };
+
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest && event.target.closest('.file-copy');
+        if (!button) return;
+
+        var path = button.getAttribute('data-copy-path');
+        if (!path) return;
+
+        window.repoTour.copyFilePath(button, path);
+      });
+    }());
+  </script>
+</body>
+</html>

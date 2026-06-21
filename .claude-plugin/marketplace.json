@@ -1,0 +1,15 @@
+{
+  "name": "repo-tour",
+  "metadata": {
+    "description": "AI-powered repository analysis and static HTML report generation"
+  },
+  "owner": {
+    "name": "HappyOnigiri"
+  },
+  "plugins": [
+    {
+      "name": "repo-tour",
+      "source": "."
+    }
+  ]
+}

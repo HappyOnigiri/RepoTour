@@ -1,0 +1,14 @@
+{
+  "name": "repo-tour",
+  "displayName": "Repo Tour",
+  "description": "AI-powered repository analysis — generate static HTML reports covering product overview, tech stack, architecture, and features",
+  "version": "0.1.0",
+  "author": {
+    "name": "HappyOnigiri"
+  },
+  "homepage": "https://github.com/HappyOnigiri/RepoTour",
+  "repository": "https://github.com/HappyOnigiri/RepoTour",
+  "license": "MIT",
+  "keywords": ["codebase-analysis", "documentation", "architecture", "onboarding", "repo-tour"],
+  "skills": "./skills/"
+}
